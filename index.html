@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Twitter Trending Topics</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Twitter Trending Topics</h1>
+    <button id="run-script">Click here to run the script</button>
+    <div id="results"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('#run-script').click(function() {
+                $.get('/run_script', function(data) {
+                    $('#results').html("<p>Script executed successfully. Fetching latest results...</p>");
+                    fetchResults();
+                });
+            });
+        });
+
+        function fetchResults() {
+            $.get('/latest_results', function(data) {
+                let resultHtml = "<h2>These are the most happening topics as on " + data.timestamp + "</h2>";
+                resultHtml += "<ul>";
+                resultHtml += "<li>" + data.trend1 + "</li>";
+                resultHtml += "<li>" + data.trend2 + "</li>";
+                resultHtml += "<li>" + data.trend3 + "</li>";
+                resultHtml += "<li>" + data.trend4 + "</li>";
+                resultHtml += "<li>" + data.trend5 + "</li>";
+                resultHtml += "</ul>";
+                resultHtml += "<p>The IP address used for this query was " + data.ip_address + ".</p>";
+                resultHtml += "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+                $('#results').html(resultHtml);
+            });
+        }
+    </script>
+</body>
+</html>
